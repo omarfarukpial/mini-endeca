@@ -1,0 +1,16 @@
+<div class="container w-75">
+    <div class="d-flex flex-column gap-4">
+        <div class="card" *ngFor="let record of records">
+            <div class="card-body">
+                <b style="text-decoration: none;">
+                    <a href="#">{{record.properties.global_title}}</a>
+                </b>
+                <p class="card-text">Collection: {{record.properties.frontend_collection}}</p>
+                <p class="card-text">Country: {{record.properties.sort_country_one}}</p>
+            </div>
+        </div>
+        <div class="card flex justify-content-center">
+            <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="120" [rowsPerPageOptions]="[10, 20, 30]"></p-paginator>
+        </div>
+    </div>
+</div>
