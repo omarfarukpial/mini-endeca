@@ -1,15 +1,7 @@
 import { Component, Injectable, OnInit } from '@angular/core';
 import { EndecapodService, SearchResult } from '@ibfd/endecapod';
 import { filter } from 'rxjs';
-
-export interface EneRecord {
-  properties: any;
-  records: EneRecord[];
-  dimensionValues: any;
-}
-
-@Injectable()
-export class ResultExposeService extends EndecapodService {}
+import { ResultService } from 'src/app/services/result.service';
 
 
 interface PageEvent {
@@ -22,63 +14,27 @@ interface PageEvent {
 @Component({
   selector: 'app-results',
   templateUrl: './results.component.html',
-  styleUrls: ['./results.component.css'],
-  providers: [
-    { provide: ResultExposeService, useClass: ResultExposeService },
-  ],
+  styleUrls: ['./results.component.css']
 })
 export class ResultsComponent implements OnInit {
 
-  
-  result: any | SearchResult;
-
-  records: EneRecord[]= [];
-  properties: any;
-  p: any;
-  itemContainer: number[] = [4294963454];
+  results: Object;
 
   constructor(
-    private endecapodService: EndecapodService,
-    private resultExposeService: ResultExposeService,
-  ) { 
-   
-  }
+    private resultService: ResultService
+  ) {}
 
   ngOnInit(): void {
 
-    this.resultExposeService.Result()
-    .pipe(filter(v => v instanceof SearchResult))
-    .subscribe((res: (SearchResult|any)) => {
-      this.result = res;
-      this.process_result();
+    this.resultService.fetchResult();
+    this.resultService.data$.subscribe((data) => {
+      this.results = data;
+      console.log("Results: ", this.results);
+      
     });
-
-
-    this.funSubmit(this.itemContainer);
-
-
+    
 
   }
-
-
-  process_result(): void {
-    this.records = this.result.getRecords();
-    console.log("records : ", this.records);
-    this.properties=this.records.map(item =>{ 
-      return {properties: item.properties};
-    });
-    this.p = this.properties.map((item:any) =>item.properties);  
-  }
-
-
-  funSubmit(n: number[]){
-    this.resultExposeService.Copy(this.endecapodService);
-    n.forEach(item => this.resultExposeService.AddN(item));
-    this.resultExposeService.setDym(false);
-    this.resultExposeService.DoSearch();
-  }
-
-
 
   first: number = 0;
 

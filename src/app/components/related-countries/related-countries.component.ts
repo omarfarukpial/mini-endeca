@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Dimension, EndecapodService, SearchResult } from '@ibfd/endecapod';
 import { map, take } from 'rxjs';
 import { AppConfigData } from 'src/app/model/config/app-config-data';
+import { RelatedCountry } from 'src/app/model/data/relatedCountry';
 import { AppConfigService } from 'src/app/services/app-config.service';
 import { ExposeService } from 'src/app/services/expose.service';
+import { ResultService } from 'src/app/services/result.service';
 interface City {
   name: string;
   code: string;
@@ -21,14 +23,15 @@ export class RelatedCountriesComponent implements OnInit {
   private appConfigData: AppConfigData;
 
   relatedCountry: Object;
-  selectedRelatedCountry: Object;
+  selectedRelatedCountry: RelatedCountry;
 
 
 
   constructor(   
     private appConfigService: AppConfigService,
     private endecapodService: EndecapodService,
-    private exposeService: ExposeService
+    private exposeService: ExposeService,
+    private resultService: ResultService
     ) { 
       this.appConfigData = new AppConfigData(this.appConfigService.config);
     }
@@ -49,6 +52,10 @@ export class RelatedCountriesComponent implements OnInit {
     this.exposeService.Copy(this.endecapodService);
     this.exposeService.setDym(false);
     this.exposeService.SetNe([this.relatedCountryDimension.id]);
+  }
+
+  onRelatedCountryChange(event: Event) {
+    this.resultService.addRelatedCountry(this.selectedRelatedCountry);
   }
 
 

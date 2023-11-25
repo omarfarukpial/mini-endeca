@@ -4,7 +4,12 @@ import { map, take } from 'rxjs';
 import { AppConfigData } from 'src/app/model/config/app-config-data';
 import { AppConfigService } from 'src/app/services/app-config.service';
 import { ExposeService } from 'src/app/services/expose.service';
+import { ResultService } from 'src/app/services/result.service';
 
+export interface Collection {
+  id: number;
+  name: String;
+}
 
 @Component({
   selector: 'app-collections',
@@ -20,12 +25,13 @@ export class CollectionsComponent implements OnInit {
   private appConfigData: AppConfigData;
 
   collection: Object;
-  selectedCollection: Object;
+  selectedCollection: Collection;
 
   constructor(
     private appConfigService: AppConfigService,
     private endecapodService: EndecapodService,
     private exposeService: ExposeService,
+    private resultService: ResultService
     ) {
       this.appConfigData = new AppConfigData(this.appConfigService.config);
      }
@@ -49,7 +55,7 @@ export class CollectionsComponent implements OnInit {
 
 
   onCollectionChange(event: Event) {
-    console.log("Collection changed!!!!!!!!!!  ", this.selectedCollection);
+    this.resultService.setCollection(this.selectedCollection);
     
   }
 
