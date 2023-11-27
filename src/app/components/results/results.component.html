@@ -1,16 +1,16 @@
-<div class="container w-75">
-    <div class="d-flex flex-column gap-4">
+<div class="container">
+    <div [style]="{'width': '700px'}" class="d-flex flex-column gap-4">
         <div class="card" *ngFor="let result of results">
             <div class="card-body">
                 <b style="text-decoration: none;">
-                    <a href="#">{{result.global_title}}</a>
+                    <a [href]="'#/doc?url='+result.relative_path">{{result.global_title}}</a>
                 </b>
                 <p class="card-text">Collection: {{result.frontend_collection}}</p>
                 <p class="card-text">Country: {{result.sort_country_one}}</p>
             </div>
         </div>
         <div class="card flex justify-content-center">
-            <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="120" [rowsPerPageOptions]="[10, 20, 30]"></p-paginator>
+            <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="totalResultCount"></p-paginator>
         </div>
     </div>
 </div>

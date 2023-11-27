@@ -18,6 +18,7 @@ import { AppConfigService } from './services/app-config.service';
 import { CollectionsComponent } from './components/collections/collections.component';
 import { CountriesComponent } from './components/countries/countries.component';
 import { RelatedCountriesComponent } from './components/related-countries/related-countries.component';
+import { DocShowComponent } from './components/doc-show/doc-show.component';
 
 
 const appConfigFactory = (appConfigService: AppConfigService) => {
@@ -34,6 +35,7 @@ const appConfigFactory = (appConfigService: AppConfigService) => {
     CollectionsComponent,
     CountriesComponent,
     RelatedCountriesComponent,
+    DocShowComponent,
   ],
   imports: [
     BrowserModule,

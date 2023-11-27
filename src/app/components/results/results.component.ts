@@ -19,29 +19,33 @@ interface PageEvent {
 export class ResultsComponent implements OnInit {
 
   results: Object;
+  totalResultCount: number;
+  
 
   constructor(
     private resultService: ResultService
   ) {}
 
   ngOnInit(): void {
-
     this.resultService.fetchResult();
     this.resultService.data$.subscribe((data) => {
       this.results = data;
-      console.log("Results: ", this.results);
-      
+      this.totalResultCount = this.resultService.getTotalResultCount();
     });
-    
-
+  
   }
 
+  ngOnChange(): void {
+    this.totalResultCount = this.resultService.getTotalResultCount();
+  }
+  
+
+
   first: number = 0;
-
   rows: number = 10;
-
   onPageChange(event: PageEvent) {
       this.first = event.first;
+      this.resultService.setOffset(this.first);
       this.rows = event.rows;
   }
 

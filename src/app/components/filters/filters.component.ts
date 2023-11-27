@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Collection } from 'src/app/model/data/collection';
+import { Country } from 'src/app/model/data/country';
+import { RelatedCountry } from 'src/app/model/data/relatedCountry';
+import { ResultService } from 'src/app/services/result.service';
 
 @Component({
   selector: 'app-filters',
@@ -7,8 +11,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FiltersComponent implements OnInit {
 
+  selectedCollectionsList: Collection[];
+  selectedCountriesList: Country[];
+  selectedRelatedCountriesList: RelatedCountry[];
 
-  constructor() {}
+  constructor(private resultService: ResultService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.selectedCollectionsList = this.resultService.getSelectedCollectionsList();
+    this.selectedCountriesList = this.resultService.getSelectedCountriesList();
+    this.selectedRelatedCountriesList = this.resultService.getSelectedRelatedCountriesList();
+
+  }
+  ngOnChange() {
+    this.selectedCollectionsList = this.resultService.getSelectedCollectionsList();
+    this.selectedCountriesList = this.resultService.getSelectedCountriesList();
+    this.selectedRelatedCountriesList = this.resultService.getSelectedRelatedCountriesList();
+    
+  }
 }

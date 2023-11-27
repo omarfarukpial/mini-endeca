@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EndecapodService, SearchResult } from '@ibfd/endecapod';
+import { EdcaUrlSerializer, EndecapodService, SearchResult } from '@ibfd/endecapod';
 import { AppConfigData } from '../model/config/app-config-data';
 import { AppConfigService } from './app-config.service';
 import { Subject, filter } from 'rxjs';
@@ -34,79 +34,86 @@ export class ResultService {
 
   records: EneRecord[]= [];
   properties: any;
-  p: any;
-  itemContainer: number[] = [0];
+  propertyList: any;
+
+  selectedCollectionsList: Collection[] =[];
+  selectedCountriesList: Country[] = [];
+  selectedRelatedCountriesList: RelatedCountry[] = [];
+
+  totalResultCount: number = 0;
 
   private appConfigData: AppConfigData;
 
   constructor(
     private appConfigService: AppConfigService,
-    private endecapodService: EndecapodService
+    private endecapodService: EndecapodService,
+    private urlSerializer: EdcaUrlSerializer
   ) { 
     this.appConfigData = new AppConfigData(this.appConfigService.config);
-    this.endecapodService.AddNe(7487);
-    // this.endecapodService.setDym(false);
+
+    this.endecapodService.setURL(this.appConfigData.getEndecapodURL(), this.appConfigData.getAwareURL());
+    this.endecapodService.RegisterParams(this.urlSerializer.parse('?' + this.appConfigData.getInitQuery()).queryParamMap);
+    this.endecapodService.PopNe(this.appConfigData.getCollectionDimension().id);
+    this.endecapodService.Paginate(0);
+
   }
-
-
 
   fetchResult(): void {
-
-    console.log("Item array: ", this.itemContainer);
-    
-
-    // this.itemContainer.forEach(item => this.endecapodService.AddN(item));
-    this.endecapodService.SetN(this.itemContainer);
-   
+ 
     this.endecapodService.DoSearch();
-
     this.endecapodService.Result()
-    .pipe(filter(val => val instanceof SearchResult))
-    .subscribe((res: SearchResult) => {
-      this.result = res;
-      this.records = this.result.getRecords();
-      this.properties=this.records.map(item =>{ 
-        return {properties: item.properties};
+      .pipe(filter(val => val instanceof SearchResult))
+      .subscribe((res: SearchResult) => {
+        this.result = res;
+        this.setTotalResultCount(this.result.result.results.numBins);
+        this.records = this.result.getRecords();
+        this.properties = this.records.map(item => item.records.map(record => record.properties));
+        this.propertyList = this.properties.flat();
+        this.dataSubject.next(this.propertyList);
       });
-      this.p = this.properties.map((item:any) =>item.properties);  
-
-      this.dataSubject.next(this.p);
-      
-
-    });
   }
 
-
-
   setCollection(selectedCollection: Collection) {
-    if (this.previousCollection) {
-      const indexToRemove = this.itemContainer.indexOf(this.previousCollection.id);
-      if (indexToRemove !== -1) {
-        this.itemContainer.splice(indexToRemove, 1);
-      }
-    }
-    this.itemContainer.push(selectedCollection.id);
-    this.previousCollection = selectedCollection;
-    console.log(selectedCollection);
+    this.endecapodService.SetN([0, selectedCollection.id]);
+    this.selectedCollectionsList.push(selectedCollection);
     this.fetchResult();
-    
   }
 
   addCountry(selectedCountry: Country) {
-    this.itemContainer.push(selectedCountry.id);
+    this.endecapodService.AddN(selectedCountry.id);
+    this.selectedCountriesList.push(selectedCountry);
     this.fetchResult();
   }
-
 
   addRelatedCountry(selectedRelatedCountry: RelatedCountry) {
-    this.itemContainer.push(selectedRelatedCountry.id);
+    this.endecapodService.AddN(selectedRelatedCountry.id);
+    this.selectedRelatedCountriesList.push(selectedRelatedCountry);
     this.fetchResult();
   }
-  
 
+  setOffset(startingNumber: number) {
+    this.endecapodService.Paginate(startingNumber);
+    this.fetchResult();
+  }
 
+  setTotalResultCount(totalResult: number) {
+    this.totalResultCount = totalResult;
+  }
 
+  getTotalResultCount(): number {
+    return this.totalResultCount;
+  }
 
+  getSelectedCollectionsList(): Collection[] {
+    return this.selectedCollectionsList;
+  }
 
+  getSelectedCountriesList(): Country[] {
+    return this.selectedCountriesList;
+  }
+
+  getSelectedRelatedCountriesList(): RelatedCountry[] {
+    return this.selectedRelatedCountriesList;
+  }
 
 }
