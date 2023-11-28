@@ -3,11 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { DocShowComponent } from './components/doc-show/doc-show.component';
 import { ResultsComponent } from './components/results/results.component';
+import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
-  {path: '', component: ResultsComponent},
-  {path: 'search', component: ResultsComponent},
+  {path: '', component: HomeComponent},
+  {path: 'search', component: HomeComponent},
   {path: 'doc', component: DocShowComponent}
+
 
 ];
 

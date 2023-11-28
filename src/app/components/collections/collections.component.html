@@ -1,4 +1,9 @@
 <div class="d-flex flex-column">
     <label>Collection</label>
-    <p-dropdown [style]="{'width': '250px'}" [options]="collection" [(ngModel)]="selectedCollection" optionLabel="name" (onChange)="onCollectionChange($event)"></p-dropdown>
+    <p-dropdown [style]="{'width': '250px'}" 
+    [options]="collection" 
+    [(ngModel)]="selectedCollection" 
+    optionLabel="name" 
+    placeholder="Select a Component"
+    (onChange)="onCollectionChange($event)"></p-dropdown>
 </div>

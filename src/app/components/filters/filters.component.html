@@ -3,7 +3,7 @@
     <app-collections></app-collections>
     <app-countries></app-countries>
     <app-related-countries></app-related-countries>
-    <div class="border border-rounded">
+    <div class="border rounded">
         <ul *ngIf="selectedCollectionsList.length > 0" class="p-3 m-3">
           <b>Collections:</b>
           <li *ngFor="let selectedCollections of selectedCollectionsList">{{selectedCollections.name}}</li>

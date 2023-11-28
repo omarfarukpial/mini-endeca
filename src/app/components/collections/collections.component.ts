@@ -37,13 +37,17 @@ export class CollectionsComponent implements OnInit {
      }
 
   ngOnInit(): void {
-  this.collectionDimension = this.appConfigData.getCollectionDimension();
-  this.configureCollectionExposeService();
-  this.exposeService.Query()
-  .pipe(map(res => new SearchResult(res)),take(1))
-  .subscribe(res => {
-    this.collection = res.getDimension(this.collectionDimension.id).values;
-    });
+    if (this.resultService.getSelectedCollectionsList().length > 0) {
+      this.selectedCollection = this.resultService.getSelectedCollectionsList()[0];
+      console.log("🚀 ~ file: collections.component.ts:42 ~ CollectionsComponent ~ ngOnInit ~ this.selectedCollection:", this.selectedCollection)
+    }
+    this.collectionDimension = this.appConfigData.getCollectionDimension();
+    this.configureCollectionExposeService();
+    this.exposeService.Query()
+    .pipe(map(res => new SearchResult(res)),take(1))
+    .subscribe(res => {
+      this.collection = res.getDimension(this.collectionDimension.id).values;
+      });
   }
 
   configureCollectionExposeService() {

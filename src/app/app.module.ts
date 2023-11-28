@@ -19,6 +19,7 @@ import { CollectionsComponent } from './components/collections/collections.compo
 import { CountriesComponent } from './components/countries/countries.component';
 import { RelatedCountriesComponent } from './components/related-countries/related-countries.component';
 import { DocShowComponent } from './components/doc-show/doc-show.component';
+import { HomeComponent } from './components/home/home.component';
 
 
 const appConfigFactory = (appConfigService: AppConfigService) => {
@@ -36,6 +37,7 @@ const appConfigFactory = (appConfigService: AppConfigService) => {
     CountriesComponent,
     RelatedCountriesComponent,
     DocShowComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,

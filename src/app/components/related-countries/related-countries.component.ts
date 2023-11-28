@@ -38,6 +38,10 @@ export class RelatedCountriesComponent implements OnInit {
 
   ngOnInit(): void {
 
+    if (this.resultService.getSelectedRelatedCountriesList().length > 0) {
+      this.selectedRelatedCountry = this.resultService.getSelectedRelatedCountriesList()[0];
+      console.log("🚀 ~ file: related-countries.component.ts:43 ~ RelatedCountriesComponent ~ ngOnInit ~ this.selectedRelatedCountry:", this.selectedRelatedCountry)
+    }
     this.relatedCountryDimension = this.appConfigData.getRelatedCountryDimension();
     this.configureCountryExposeService();
     this.exposeService.Query()

@@ -1,6 +1,7 @@
 import { Component, Injectable, OnInit } from '@angular/core';
 import { EndecapodService, SearchResult } from '@ibfd/endecapod';
 import { filter } from 'rxjs';
+import { DWayService } from 'src/app/services/d-way.service';
 import { ResultService } from 'src/app/services/result.service';
 
 
@@ -23,7 +24,8 @@ export class ResultsComponent implements OnInit {
   
 
   constructor(
-    private resultService: ResultService
+    private resultService: ResultService,
+    private dWayService: DWayService
   ) {}
 
   ngOnInit(): void {
@@ -37,6 +39,10 @@ export class ResultsComponent implements OnInit {
 
   ngOnChange(): void {
     this.totalResultCount = this.resultService.getTotalResultCount();
+  }
+
+  onShowDoc(docPath: string) {
+    this.dWayService.setDocURL(docPath);
   }
   
 

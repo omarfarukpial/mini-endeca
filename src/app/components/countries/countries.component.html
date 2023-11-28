@@ -1,4 +1,12 @@
 <div class="d-flex flex-column">
     <label>Country</label>
-    <p-dropdown [style]="{'width': '250px'}" [options]="country" [(ngModel)]="selectedCountry" optionLabel="name" (onChange)="onCountryChange($event)"></p-dropdown>
+    <p-dropdown 
+    [style]="{'width': '250px'}"
+    [options]="country" 
+    [(ngModel)]="selectedCountry" 
+    optionLabel="name" 
+    (onChange)="onCountryChange($event)" 
+    placeholder="Select a Country"
+    ></p-dropdown>
 </div>
+{{selectedCountry?.name}}

@@ -42,6 +42,9 @@ export class AppConfigData {
         return this.configMap['related_country_dimension'];
     }
 
+    getDWayURL(): string {
+        return this.configMap['d-way_url'];
+    }    
 
 
     getEndecapodURL(): string {

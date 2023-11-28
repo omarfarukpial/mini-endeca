@@ -33,14 +33,19 @@ export class CountriesComponent implements OnInit {
      }
 
   ngOnInit(): void {
-
+   
     this.countryDimension = this.appConfigData.getCountryDimension();
     this.configureCountryExposeService();
     this.exposeService.Query()
     .pipe(map(res => new SearchResult(res)),take(1))
     .subscribe(res => {
       this.country = res.getDimension(this.countryDimension.id).values;
-      });      
+      });  
+      
+      if (this.resultService.getSelectedCountriesList().length > 0) {
+        this.selectedCountry = this.resultService.getSelectedCountriesList()[0];
+        console.log("🚀 ~ file: countries.component.ts:38 ~ CountriesComponent ~ ngOnInit ~ this.selectedCountry:", this.selectedCountry)
+      }
   }
 
   configureCountryExposeService() {
