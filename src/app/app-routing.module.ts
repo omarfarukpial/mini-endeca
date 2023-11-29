@@ -6,8 +6,8 @@ import { ResultsComponent } from './components/results/results.component';
 import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
-  {path: '', component: HomeComponent},
-  {path: 'search', component: HomeComponent},
+  {path: '', component: HomeComponent, data: {reuse: true}},
+  {path: 'search', component: HomeComponent, data: {reuse: true}},
   {path: 'doc', component: DocShowComponent}
 
 

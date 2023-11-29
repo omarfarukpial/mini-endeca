@@ -20,6 +20,8 @@ import { CountriesComponent } from './components/countries/countries.component';
 import { RelatedCountriesComponent } from './components/related-countries/related-countries.component';
 import { DocShowComponent } from './components/doc-show/doc-show.component';
 import { HomeComponent } from './components/home/home.component';
+import { RouteReuseStrategy } from '@angular/router';
+import { RouterReuseStrategy } from './utils/router-reuse-strategy';
 
 
 const appConfigFactory = (appConfigService: AppConfigService) => {
@@ -56,7 +58,11 @@ const appConfigFactory = (appConfigService: AppConfigService) => {
       useFactory: appConfigFactory,
       multi: true,
       deps: [AppConfigService]
-    }],
+    }, 
+    {
+      provide: RouteReuseStrategy, useClass: RouterReuseStrategy
+    }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
