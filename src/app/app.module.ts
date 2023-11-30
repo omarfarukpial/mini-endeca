@@ -11,7 +11,6 @@ import { ResultsComponent } from './components/results/results.component';
 import { PaginatorModule } from 'primeng/paginator';
 import { FormsModule } from '@angular/forms';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { SingleResultComponent } from './components/single-result/single-result.component';
 import { HttpClientModule } from '@angular/common/http';
 import { EndecapodModule } from '@ibfd/endecapod';
 import { AppConfigService } from './services/app-config.service';
@@ -22,6 +21,7 @@ import { DocShowComponent } from './components/doc-show/doc-show.component';
 import { HomeComponent } from './components/home/home.component';
 import { RouteReuseStrategy } from '@angular/router';
 import { RouterReuseStrategy } from './utils/router-reuse-strategy';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 
 const appConfigFactory = (appConfigService: AppConfigService) => {
@@ -34,7 +34,6 @@ const appConfigFactory = (appConfigService: AppConfigService) => {
     TopBarComponent,
     FiltersComponent,
     ResultsComponent,
-    SingleResultComponent,
     CollectionsComponent,
     CountriesComponent,
     RelatedCountriesComponent,
@@ -50,7 +49,8 @@ const appConfigFactory = (appConfigService: AppConfigService) => {
     NgbModule,
     FormsModule,
     BsDropdownModule,
-    PaginatorModule
+    PaginatorModule,
+    ProgressSpinnerModule
   ],
   providers: [
     {

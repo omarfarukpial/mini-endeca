@@ -55,8 +55,11 @@ export class CollectionsComponent implements OnInit {
 
 
   onCollectionChange(event: Event) {
-    this.resultService.setCollection(this.selectedCollection);
-    
+    if (this.selectedCollection === null) {
+      this.resultService.removeCollection();
+    } else {
+      this.resultService.setCollection(this.selectedCollection);
+    }
   }
 
 }

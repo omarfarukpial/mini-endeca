@@ -54,7 +54,12 @@ export class RelatedCountriesComponent implements OnInit {
   }
 
   onRelatedCountryChange(event: Event) {
-    this.resultService.addRelatedCountry(this.selectedRelatedCountry);
+    if (this.selectedRelatedCountry === null) {
+      this.resultService.removeRelatedCountry();
+    } else {
+      this.resultService.addRelatedCountry(this.selectedRelatedCountry);
+    }
+
   }
 
 

@@ -22,23 +22,32 @@ export class ResultService {
 
   result: any | SearchResult;
 
-  private selectedCollection: Collection;
+  private currentCollection: Collection;
   private previousCollection: Collection;
 
-  private selectedCountry: Country;
-  private selectedRelatedCountry: RelatedCountry;
+  private currentCountry: Country;
+  private previousCountry: Country;
+
+  private currentRelatedCountry: RelatedCountry;
+  private previousRelatedCountry: RelatedCountry;
+
 
   private dataSubject = new Subject<any>();
   data$ = this.dataSubject.asObservable();
 
 
+  private loadingSubject = new Subject<boolean>();
+  loading$ = this.loadingSubject.asObservable();
+
+  private setLoading(loading: boolean) {
+    this.loadingSubject.next(loading);
+  }
+
+
+
   records: EneRecord[]= [];
   properties: any;
   propertyList: any;
-
-  selectedCollectionsList: Collection[] =[];
-  selectedCountriesList: Country[] = [];
-  selectedRelatedCountriesList: RelatedCountry[] = [];
 
   totalResultCount: number = 0;
 
@@ -53,41 +62,49 @@ export class ResultService {
 
     this.endecapodService.setURL(this.appConfigData.getEndecapodURL(), this.appConfigData.getAwareURL());
     this.endecapodService.RegisterParams(this.urlSerializer.parse('?' + this.appConfigData.getInitQuery()).queryParamMap);
+    this.endecapodService.SetN([0]);
     this.endecapodService.PopNe(this.appConfigData.getCollectionDimension().id);
     this.endecapodService.Paginate(0);
 
   }
 
   fetchResult(): void {
- 
+    this.setLoading(true);
     this.endecapodService.DoSearch();
     this.endecapodService.Result()
       .pipe(filter(val => val instanceof SearchResult))
       .subscribe((res: SearchResult) => {
         this.result = res;
-        this.setTotalResultCount(this.result.result.results.numBins);
+        this.setTotalResultCount(this.result.result.results.numAggrBins);
         this.records = this.result.getRecords();
         this.properties = this.records.map(item => item.records.map(record => record.properties));
         this.propertyList = this.properties.flat();
         this.dataSubject.next(this.propertyList);
+        this.setLoading(false);
       });
   }
 
   setCollection(selectedCollection: Collection) {
-    this.endecapodService.SetN([0, selectedCollection.id]);
-    this.selectedCollectionsList.push(selectedCollection);
+    this.setCurrentCollection(selectedCollection);
+    this.previousCollection?.id && this.endecapodService.PopN(this.previousCollection.id);
+    this.endecapodService.AddN(selectedCollection.id);
+    this.previousCollection = selectedCollection;
     this.fetchResult();
   }
 
   addCountry(selectedCountry: Country) {
+    this.setCurrentCountry(selectedCountry);
+    this.previousCountry?.id && this.endecapodService.PopN(this.previousCountry.id);
     this.endecapodService.AddN(selectedCountry.id);
-    this.selectedCountriesList.push(selectedCountry);
+    this.previousCountry = selectedCountry;
     this.fetchResult();
   }
 
   addRelatedCountry(selectedRelatedCountry: RelatedCountry) {
+    this.setCurrentRelatedCountry(selectedRelatedCountry);
+    this.previousRelatedCountry?.id && this.endecapodService.PopN(this.previousRelatedCountry.id);
     this.endecapodService.AddN(selectedRelatedCountry.id);
-    this.selectedRelatedCountriesList.push(selectedRelatedCountry);
+    this.previousRelatedCountry = selectedRelatedCountry;
     this.fetchResult();
   }
 
@@ -104,16 +121,43 @@ export class ResultService {
     return this.totalResultCount;
   }
 
-  getSelectedCollectionsList(): Collection[] {
-    return this.selectedCollectionsList;
+  getSelectedCollection(): Collection {
+    return this.currentCollection;
   }
 
-  getSelectedCountriesList(): Country[] {
-    return this.selectedCountriesList;
+  getSelectedCountry(): Country {
+    return this.currentCountry;
+  }e 
+
+  getSelectedRelatedCountry(): RelatedCountry {
+    return this.currentRelatedCountry;
   }
 
-  getSelectedRelatedCountriesList(): RelatedCountry[] {
-    return this.selectedRelatedCountriesList;
+  setCurrentCollection(currentCollection: Collection) {
+    this.currentCollection = currentCollection;
+  }
+
+  setCurrentCountry(currentCountry: Country) {
+    this.currentCountry = currentCountry;
+  }
+
+  setCurrentRelatedCountry(currentRelatedCountry: RelatedCountry) {
+    this.currentRelatedCountry = currentRelatedCountry;
+  }
+
+  removeCollection() {
+    this.previousCollection?.id && this.endecapodService.PopN(this.previousCollection.id);
+    this.fetchResult();
+  }
+
+  removeCountry() {
+    this.previousCountry?.id && this.endecapodService.PopN(this.previousCountry.id);
+    this.fetchResult();
+  }
+
+  removeRelatedCountry() {
+    this.previousRelatedCountry?.id && this.endecapodService.PopN(this.previousRelatedCountry.id);
+    this.fetchResult();
   }
 
 }

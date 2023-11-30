@@ -4,6 +4,7 @@
     [options]="collection" 
     [(ngModel)]="selectedCollection" 
     optionLabel="name" 
+    [showClear]="true"
     placeholder="Select a Component"
     (onChange)="onCollectionChange($event)"></p-dropdown>
 </div>

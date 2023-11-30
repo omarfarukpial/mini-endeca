@@ -19,9 +19,10 @@ interface PageEvent {
 })
 export class ResultsComponent implements OnInit {
 
-  results: Object;
+  results: any[] = [];
   totalResultCount: number;
-  
+  loading = true;
+  isResultExists = true;
 
   constructor(
     private resultService: ResultService,
@@ -33,12 +34,12 @@ export class ResultsComponent implements OnInit {
     this.resultService.data$.subscribe((data) => {
       this.results = data;
       this.totalResultCount = this.resultService.getTotalResultCount();
+      this.loading = false;
     });
-  
-  }
 
-  ngOnChange(): void {
-    this.totalResultCount = this.resultService.getTotalResultCount();
+    this.resultService.loading$.subscribe((loading) => {
+      this.loading = loading;
+    });
   }
 
   onShowDoc(docPath: string) {

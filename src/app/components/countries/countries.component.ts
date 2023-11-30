@@ -51,7 +51,11 @@ export class CountriesComponent implements OnInit {
   }
 
   onCountryChange(event: Event) {
-    this.resultService.addCountry(this.selectedCountry);
+    if(this.selectedCountry === null) {
+      this.resultService.removeCountry();
+    } else {
+      this.resultService.addCountry(this.selectedCountry);
+    }
   }
 
 }

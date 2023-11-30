@@ -11,22 +11,8 @@ import { ResultService } from 'src/app/services/result.service';
 })
 export class FiltersComponent implements OnInit {
 
-  selectedCollectionsList: Collection[];
-  selectedCountriesList: Country[];
-  selectedRelatedCountriesList: RelatedCountry[];
-
   constructor(private resultService: ResultService) {}
 
   ngOnInit(): void {
-    this.selectedCollectionsList = this.resultService.getSelectedCollectionsList();
-    this.selectedCountriesList = this.resultService.getSelectedCountriesList();
-    this.selectedRelatedCountriesList = this.resultService.getSelectedRelatedCountriesList();
-
-  }
-  ngOnChange() {
-    this.selectedCollectionsList = this.resultService.getSelectedCollectionsList();
-    this.selectedCountriesList = this.resultService.getSelectedCountriesList();
-    this.selectedRelatedCountriesList = this.resultService.getSelectedRelatedCountriesList();
-    
   }
 }

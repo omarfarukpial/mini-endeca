@@ -3,19 +3,5 @@
     <app-collections></app-collections>
     <app-countries></app-countries>
     <app-related-countries></app-related-countries>
-    <div class="border rounded">
-        <ul *ngIf="selectedCollectionsList.length > 0" class="p-3 m-3">
-          <b>Collections:</b>
-          <li *ngFor="let selectedCollections of selectedCollectionsList">{{selectedCollections.name}}</li>
-        </ul>
-        <ul *ngIf="selectedCountriesList.length > 0" class="p-3 m-3">
-          <b>Countries:</b>
-          <li *ngFor="let selectedCountries of selectedCountriesList">{{selectedCountries.name}}</li>
-        </ul>
-        <ul *ngIf="selectedRelatedCountriesList.length > 0" class="p-3 m-3">
-          <b>Related Countries:</b>
-          <li *ngFor="let selectedRelatedCountries of selectedRelatedCountriesList">{{selectedRelatedCountries.name}}</li>
-        </ul>
-    </div>
   </div>
 </div>

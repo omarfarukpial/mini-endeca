@@ -5,6 +5,7 @@
     [options]="relatedCountry" 
     [(ngModel)]="selectedRelatedCountry" 
     optionLabel="name" 
+    [showClear]="true"
     (onChange)="onRelatedCountryChange($event)"
     placeholder="Select a Related Country"
     ></p-dropdown>

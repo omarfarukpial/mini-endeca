@@ -5,8 +5,8 @@
     [options]="country" 
     [(ngModel)]="selectedCountry" 
     optionLabel="name" 
+    [showClear]="true"
     (onChange)="onCountryChange($event)" 
     placeholder="Select a Country"
     ></p-dropdown>
 </div>
-{{selectedCountry?.name}}
